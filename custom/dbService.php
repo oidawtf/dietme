@@ -149,13 +149,8 @@ class dbService {
 
         $sql = "
             SELECT
-                I.id,
-                I.name,
-                I.description,
-                I.image,
-                I.cost,
-                I.calories
-            FROM ingredients AS I
+                *
+            FROM dietsheets AS D
             ;";
         
         $query = mysql_query($sql);

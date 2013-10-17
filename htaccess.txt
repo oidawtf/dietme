@@ -1,12 +1,3 @@
-<IfModule mod_suphp.c>
-  suPHP_ConfigPath /var/www/vhost/oidawtf.com/dietme/
-  <Files php.ini>
-    order allow,deny
-    deny from all
-  </Files>
-</IfModule>
-php_flag magic_quotes_gpc off
-
 ##
 # @package		Joomla
 # @copyright	Copyright (C) 2005 - 2013 Open Source Matters. All rights reserved.
