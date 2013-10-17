@@ -1,5 +1,7 @@
 <?php
 
+echo "das ist vom max";
+
 /**
  * @package    Joomla.Site
  *
