@@ -1,8 +1,5 @@
 <?php
 
-echo "das ist vom max";
-die("TEST");
-
 /**
  * @package    Joomla.Site
  *
