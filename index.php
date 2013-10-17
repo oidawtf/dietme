@@ -1,6 +1,10 @@
 <?php
 
+<<<<<<< HEAD
 die("TEST");
+=======
+echo "das ist vom max";
+>>>>>>> 40714a27f7ea149331c6704a5469c7551de32752
 
 /**
  * @package    Joomla.Site
