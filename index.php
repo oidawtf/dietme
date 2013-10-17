@@ -1,5 +1,7 @@
 <?php
 
+die("TEST");
+
 /**
  * @package    Joomla.Site
  *
