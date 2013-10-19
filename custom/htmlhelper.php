@@ -63,6 +63,46 @@ class htmlhelper {
         echo "</form>";
     }
     
+    public static function dietSheetList($input) {
+        
+//            $item->id = $row['id_dietsheet'];
+//            $item->name = $row['name_dietsheet'];
+//            $item->description = $row['description_dietsheet'];
+//            $item->minweightloss = $row['minweightloss'];
+//            $item->maxweightloss = $row['maxweightloss'];
+//            $item->type = $row['type'];
+//            $item->lifestyle_id = $row['id_lifestyle'];
+//            $item->lifestyle_name = $row['name_lifestyle'];
+//            $item->lifestyle_description = $row['description_lifestyle'];
+        $i = 0;
+        echo "<div class='blog'>";
+        foreach ($input as $item) {
+            echo "<div class='items-row cols-1 row-".$i." row-fluid clearfix'>";
+            echo    "<div class='span12'>";
+            echo        "<div class='item column-1'>";
+            echo            "<div class='page-header'>";
+            echo                "<h2><a href='diet-sheet-details?dietsheet=".$item->id."'>".$item->name."</a></h2>";
+            echo            "</div>";
+            echo            $item->description;
+            echo        "</div>";
+            echo    "</div>";
+            echo "</div>";
+        }
+        echo "</div>";
+    }
+    
+    public static function dietSheetDetails($item) {
+        echo "<div class='items-row cols-1 row-0 row-fluid clearfix'>";
+        echo    "<div class='span12'>";
+        echo        "<div class='item column-1'>";
+        echo            "<div class='page-header'>";
+        echo                "<h2><a href='diet-sheet-details?dietsheet=".$item->id."'>".$item->name."</a></h2>";
+        echo            "</div>";
+        echo            "CONTENT: Rezepte usw...";
+        echo        "</div>";
+        echo    "</div>";
+        echo "</div>";
+    }
 }
 
 ?>

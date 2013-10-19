@@ -144,6 +144,14 @@ class dbService {
         return $result;
     }
     
+    public function selectDietSheet($id) {
+        $dietsheets = $this->selectDietSheets($id);
+        if (count($dietsheets) > 0)
+            return $dietsheets[0];
+        
+        return null;
+    }
+    
     public function selectDietSheets($search = NULL) {
         $connection = $this->openConnection();
         
@@ -153,18 +161,33 @@ class dbService {
         if ($search != NULL)
             $where = "
                 WHERE
-                DS.name LIKE '%".$search."%'
+                DS.id = '".$search."'
                     ";
         
         $sql = "
             SELECT
-                DS.id,
-                DS.name,
-                DS.description,
+                DS.id AS id_dietsheet,
+                DS.name AS name_dietsheet,
+                DS.description AS description_dietsheet,
                 DS.minweightloss,
                 DS.maxweightloss,
-                DS.type
-            FROM dietsheets AS DS
+                DS.type,
+                LS.id_lifestyle,
+                LS.name AS name_lifestyle,
+                LS.description AS description_lifestyle
+            FROM
+                dietsheets AS DS
+                LEFT OUTER JOIN (
+                    SELECT
+                        DL.f_dietsheets AS id_dietsheet,
+                        DL.f_lifestyles AS id_lifestyle,
+                        LS.name,
+                        LS.description
+                    FROM
+                        _dietsheets_lifestyles AS DL, lifestyles AS LS
+                    WHERE
+                        DL.f_lifestyles = LS.id
+                ) AS LS ON LS.id_dietsheet = DS.id
             ".$where."
             ;";
         
@@ -174,12 +197,15 @@ class dbService {
         while ($row = mysql_fetch_assoc($query))
         {
             $item = new dietsheet();
-            $item->id = $row['id'];
-            $item->name = $row['name'];
-            $item->description = $row['description'];
+            $item->id = $row['id_dietsheet'];
+            $item->name = $row['name_dietsheet'];
+            $item->description = $row['description_dietsheet'];
             $item->minweightloss = $row['minweightloss'];
             $item->maxweightloss = $row['maxweightloss'];
             $item->type = $row['type'];
+            $item->lifestyle_id = $row['id_lifestyle'];
+            $item->lifestyle_name = $row['name_lifestyle'];
+            $item->lifestyle_description = $row['description_lifestyle'];
             $result[] = $item;
         }
         
