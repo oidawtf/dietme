@@ -54,6 +54,15 @@ class htmlhelper {
 	echo "</table>";
     }
     
+    public static function dietselectionForm() {
+        echo "<form method='POST' action=''>";
+        echo    "<input type='text' name='test' />";
+        echo    "<div>";
+        echo        "<input class='btn btn-primary' type='submit' type='submit' name='choice' value='Next' />";
+        echo    "</div>";
+        echo "</form>";
+    }
+    
 }
 
 ?>
