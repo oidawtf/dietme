@@ -55,7 +55,7 @@ class htmlhelper {
     }
     
     public static function dietselectionForm() {
-        echo "<form method='POST' action=''>";
+        echo "<form method='POST' action='diet-sheet-list'>";
         echo    "<input type='text' name='test' />";
         echo    "<div>";
         echo        "<input class='btn btn-primary' type='submit' type='submit' name='choice' value='Next' />";
