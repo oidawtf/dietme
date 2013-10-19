@@ -21,6 +21,7 @@ class dietsheet {
     public $lifestyle_id;
     public $lifestyle_name;
     public $lifestyle_description;
+    public $recipes;
     
 }
 
