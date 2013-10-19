@@ -8,6 +8,7 @@ class ingredient {
     public $image;
     public $cost;
     public $calories;
+    public $amount;
     
 }
 
