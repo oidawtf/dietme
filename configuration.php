@@ -9,7 +9,7 @@ class JConfig {
 	public $captcha = '0';
 	public $list_limit = '20';
 	public $access = '1';
-	public $debug = '1';
+	public $debug = '0';
 	public $debug_lang = '0';
 	public $dbtype = 'mysqli';
 	public $host = 'mysqlsvr33.world4you.com';
@@ -53,8 +53,8 @@ class JConfig {
 	public $sef_suffix = '0';
 	public $unicodeslugs = '0';
 	public $feed_limit = '10';
-	public $log_path = '/var/www/vhost/oidawtf.com/dietme/html/logs';
-	public $tmp_path = '/var/www/vhost/oidawtf.com/dietme/html/tmp';
+	public $log_path = '/var/www/vhost/oidawtf.com/dietme_max/html/logs';
+	public $tmp_path = '/var/www/vhost/oidawtf.com/dietme_max/html/tmp';
 	public $lifetime = '15';
 	public $session_handler = 'database';
 	public $MetaRights = '';
