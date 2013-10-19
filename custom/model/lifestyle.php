@@ -6,7 +6,7 @@
  */
 
 /**
- * Description of dietsheet
+ * Description of lifestyle
  *
  * @author admin
  */
@@ -14,11 +14,7 @@ class dietsheet {
 
     public $id;
     public $name;
-    public $description;
-    public $minweightloss;
-    public $maxweightloss;
-    public $type;
-    
+    public $description;    
 }
 
 ?>

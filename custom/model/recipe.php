@@ -6,19 +6,16 @@
  */
 
 /**
- * Description of dietsheet
+ * Description of recipe
  *
  * @author admin
  */
-class dietsheet {
+class recipe {
 
     public $id;
     public $name;
     public $description;
-    public $minweightloss;
-    public $maxweightloss;
-    public $type;
-    
+    public $image;
 }
 
 ?>
