@@ -12,6 +12,8 @@
  */
 class recipe {
 
+    const defaultImage = "/dietme/images/recipes/default_recipe.jpg";
+    
     public $id;
     public $name;
     public $description;
@@ -19,6 +21,14 @@ class recipe {
     public $ingredients;
     public $times;
     public $meal;
+    
+    public function getImage() {
+        if ($this->image == NULL || $this->image == "") {
+            return self::defaultImage;
+        }
+        
+        return $this->image;
+    }
 
 }
 

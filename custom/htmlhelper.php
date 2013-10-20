@@ -12,6 +12,12 @@
  */
 class htmlhelper {
     
+    public static function image($src, $alt = NULL) {
+       echo "<a target='_blank' href='".$src."'>";
+       echo     "<img style='margin: 1px; width: 100%;' src='".$src."' alt='".$alt."' />";
+       echo "</a>";
+    }
+    
     public static function search($name) {
         echo "<form class='form-inline' method='GET' action='".$_SERVER['PHP_SELF']."'>";
         echo    "<label class='element-invisible' for='mod-search-searchword'>Search...</label>";
@@ -37,9 +43,7 @@ class htmlhelper {
         foreach ($input as $item) {
             echo    "<tr class='cat-list-row".$i."'>";
             echo        "<td style='margin: 0px; padding: 0px 1px 0px 0px;' class='list-picture' headers='categorylist_header_picture'>";
-            echo            "<a target='_blank' href='".$item->image."'>";
-            echo                "<img style='margin: 1px; width: 100%;' src='".$item->image."' />";
-            echo            "</a>";
+            htmlhelper::image($item->getImage());
             echo        "</td>";
             echo        "<td class='list-title' headers='categorylist_header_name'>";
             echo            "<h5>".$item->name."</h5>";
@@ -90,7 +94,7 @@ class htmlhelper {
         echo "</div>";
     }
     
-    public static function dietSheetDetails($dietsheet, $recipes) {
+    public static function dietSheetDetails($dietsheet) {
         
         echo "<div class='items-row cols-1 row-0 row-fluid clearfix'>";
         echo    "<div class='span12'>";
@@ -100,8 +104,8 @@ class htmlhelper {
         echo            "</div>";
         
         echo            "<div id='slide-days' class='accordion'>";
-        for ($i = 1; $i <= count($recipes); $i++) {
-            if ($recipes[$i] == NULL)
+        for ($i = 1; $i <= count($dietsheet->recipes); $i++) {
+            if ($dietsheet->recipes[$i] == NULL)
                 break;
             
             echo            "<div class='accordion-group'>";
@@ -113,35 +117,33 @@ class htmlhelper {
             echo                "<div id='day".$i."' class='accordion-body collapse'>";
             echo                    "<div class='accordion-inner'>";
             
-            echo            "<div id='slide-recipes".$i."' class='accordion'>";
-            foreach ($recipes[$i] as $recipe) {
-                echo            "<div class='accordion-group'>";
-                echo                "<div class='accordion-heading'>";
-                echo                    "<strong>";
-                echo                        "<a class='accordion-toggle' data-toggle='collapse' data-parent='#slide-recipes".$i."' href='#recipe".$i."_".$recipe->id."'>".$recipe->times."x ".$recipe->name." - ".$recipe->meal."</a>";
-                echo                    "</strong>";
-                echo                "</div>";
-                echo                "<div id='recipe".$i."_".$recipe->id."' class='accordion-body collapse'>";
-                echo                    "<div class='accordion-inner'>";
-                echo                        "<dl class='contact-address dl-horizontal'>";
-                echo                            "<dt>";
-                echo                                "<span class='jicons-icons'>";
-                echo                                    "<img alt='Address: ' src='/dietme_max/media/contacts/images/con_address.png'>";
-                echo                                "</span>";
-                echo                            "</dt>";
-                echo                            "<dd>";
-                echo                                "<span class='contact-street'>";
-                echo                                    $recipe->description;
-                echo                                    "<br>";
-                echo                                "</span>";
-                echo                            "</dd>";
-                echo                        "</dl>";
-                echo                    "</div>";
-                echo                "</div>";
-                echo            "</div>";
+            echo                        "<div id='slide-recipes".$i."' class='accordion'>";
+            foreach ($dietsheet->recipes[$i] as $recipe) {
+                echo                        "<div class='accordion-group'>";
+                echo                            "<div class='accordion-heading'>";
+                echo                                "<strong>";
+                echo                                    "<a class='accordion-toggle' data-toggle='collapse' data-parent='#slide-recipes".$i."' href='#recipe".$i."_".$recipe->id."'>".$recipe->times."x ".$recipe->name." - ".$recipe->meal."</a>";
+                echo                                "</strong>";
+                echo                            "</div>";
+                echo                            "<div id='recipe".$i."_".$recipe->id."' class='accordion-body collapse'>";
+                echo                                "<div class='accordion-inner'>";
+                echo                                    "<dl class='contact-address dl-horizontal'>";
+                echo                                        "<dt>";
+                htmlhelper::image($recipe->getImage());
+                echo                                        "</dt>";
+                echo                                        "<dd>";
+                echo                                            "<span class='contact-street'>";
+                echo                                                $recipe->description;
+                echo                                                "<br>";
+                echo                                            "</span>";
+                echo                                        "</dd>";
+                echo                                   "</dl>";
+                echo                               "</div>";
+                echo                           "</div>";
+                echo                        "</div>";
             }
-            echo            "</div>";
-        
+            echo                        "</div>";
+
             echo                    "</div>";
             echo                "</div>";
             echo            "</div>";
