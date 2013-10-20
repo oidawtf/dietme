@@ -157,8 +157,8 @@ class dbService {
     public function selectDietSheet($id) {
         $dietsheets = $this->selectDietSheets($id);
         if (count($dietsheets) > 0)
-            return $dietsheets[0];
-        
+            return reset($dietsheets);
+               
         return null;
     }
     
@@ -178,6 +178,7 @@ class dbService {
             SELECT
                 DS.id AS id_dietsheet,
                 DS.name AS name_dietsheet,
+                DS.image AS image_dietsheet,
                 DS.description AS description_dietsheet,
                 DS.minweightloss,
                 DS.maxweightloss,
@@ -212,6 +213,7 @@ class dbService {
                 $dietsheet = new dietsheet();
                 $dietsheet->id = $id;
                 $dietsheet->name = $row['name_dietsheet'];
+                $dietsheet->image = $row['image_dietsheet'];
                 $dietsheet->description = $row['description_dietsheet'];
                 $dietsheet->minweightloss = $row['minweightloss'];
                 $dietsheet->maxweightloss = $row['maxweightloss'];

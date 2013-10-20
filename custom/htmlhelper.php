@@ -10,11 +10,24 @@
  *
  * @author admin
  */
+
 class htmlhelper {
+
+    private static $initialized = false;
     
-    public static function image($src, $alt = NULL) {
+    public static function initialize() {
+        $document = JFactory::getDocument();
+        $document->addStyleSheet("/dietme/custom/dietme.css");
+    }    
+    
+    public static function image($src, $class = NULL, $alt = NULL) {
+        
+        if (!htmlhelper::$initialized) {
+            htmlhelper::initialize();
+        }
+        
        echo "<a target='_blank' href='".$src."'>";
-       echo     "<img style='margin: 1px; width: 100%;' src='".$src."' alt='".$alt."' />";
+       echo     "<img class='".$class."' src='".$src."' alt='".$alt."' />";
        echo "</a>";
     }
     
@@ -43,7 +56,7 @@ class htmlhelper {
         foreach ($input as $item) {
             echo    "<tr class='cat-list-row".$i."'>";
             echo        "<td style='margin: 0px; padding: 0px 1px 0px 0px;' class='list-picture' headers='categorylist_header_picture'>";
-            htmlhelper::image($item->getImage());
+            htmlhelper::image($item->getImage(), "image-ingredient");
             echo        "</td>";
             echo        "<td class='list-title' headers='categorylist_header_name'>";
             echo            "<h5>".$item->name."</h5>";
@@ -67,26 +80,34 @@ class htmlhelper {
         echo "</form>";
     }
     
-    public static function dietSheetList($input) {
+    private static function dietSheetSimple($dietsheet) {
+        echo "<div class='page-header'>";
+        htmlhelper::image($dietsheet->getImage(), "image-dietsheet");
+        echo    "<h2><a href='diet-sheet-details?dietsheet=".$dietsheet->id."'>".$dietsheet->name."</a></h2>";
+        echo "</div>";
+        echo "<div class='article-info muted'>";
+        echo     "<dl class=article-info>";
+        echo         "<dt class='article-info-term'>Details</dt>";
+        echo         "<dd>Minmal weight loss: ".$dietsheet->minweightloss." kg</dd>";
+        echo         "<dd>Maximal weight loss: ".$dietsheet->maxweightloss." kg</dd>";
+        echo         "<dd>Diet type: ".$dietsheet->type."</dd>";
+        echo         "<dd>Goes with lifestyles: ".$dietsheet->getLifestyles()."</dd>";
+        echo     "</dl>";
+        echo "</div>";
+        echo $dietsheet->description;
+        echo "<br />";
+        echo "<br />";
+        echo "<br />";
+    }
+    
+    public static function dietSheetList($list) {
         $i = 0;
         echo "<div class='blog'>";
-        foreach ($input as $item) {
+        foreach ($list as $dietsheet) {
             echo "<div class='items-row cols-1 row-".$i." row-fluid clearfix'>";
             echo    "<div class='span12'>";
             echo        "<div class='item column-1'>";
-            echo            "<div class='page-header'>";
-            echo                "<h2><a href='diet-sheet-details?dietsheet=".$item->id."'>".$item->name."</a></h2>";
-            echo            "</div>";
-            echo            "<div class='article-info muted'>";
-            echo                "<dl class=article-info>";
-            echo                    "<dt class='article-info-term'>Details</dt>";
-            echo                    "<dd>Minmal weight loss: ".$item->minweightloss." kg</dd>";
-            echo                    "<dd>Maximal weight loss: ".$item->maxweightloss." kg</dd>";
-            echo                    "<dd>Diet type: ".$item->type."</dd>";
-            echo                    "<dd>Goes with lifestyles: ".$item->getLifestyles()."</dd>";
-            echo                "</dl>";
-            echo            "</div>";
-            echo            $item->description;
+            htmlhelper::dietSheetSimple($dietsheet);
             echo        "</div>";
             echo    "</div>";
             echo "</div>";
@@ -95,13 +116,10 @@ class htmlhelper {
     }
     
     public static function dietSheetDetails($dietsheet) {
-        
         echo "<div class='items-row cols-1 row-0 row-fluid clearfix'>";
         echo    "<div class='span12'>";
         echo        "<div class='item column-1'>";
-        echo            "<div class='page-header'>";
-        echo                "<h2><a href='diet-sheet-details?dietsheet=".$dietsheet->id."'>".$dietsheet->name."</a></h2>";
-        echo            "</div>";
+        htmlhelper::dietSheetSimple($dietsheet);
         
         echo            "<div id='slide-days' class='accordion'>";
         for ($i = 1; $i <= count($dietsheet->recipes); $i++) {
@@ -129,7 +147,7 @@ class htmlhelper {
                 echo                                "<div class='accordion-inner'>";
                 echo                                    "<dl class='contact-address dl-horizontal'>";
                 echo                                        "<dt>";
-                htmlhelper::image($recipe->getImage());
+                htmlhelper::image($recipe->getImage(), "image-recipe");
                 echo                                        "</dt>";
                 echo                                        "<dd>";
                 echo                                            "<span class='contact-street'>";
