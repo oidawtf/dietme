@@ -198,17 +198,26 @@ class dbService {
         $result = array();
         while ($row = mysql_fetch_assoc($query))
         {
-            $item = new dietsheet();
-            $item->id = $row['id_dietsheet'];
-            $item->name = $row['name_dietsheet'];
-            $item->description = $row['description_dietsheet'];
-            $item->minweightloss = $row['minweightloss'];
-            $item->maxweightloss = $row['maxweightloss'];
-            $item->type = $row['type'];
-            $item->lifestyle_id = $row['id_lifestyle'];
-            $item->lifestyle_name = $row['name_lifestyle'];
-            $item->lifestyle_description = $row['description_lifestyle'];
-            $result[] = $item;
+            $id = $row['id_dietsheet'];
+            
+            if (!array_key_exists($id, $result)) {
+                $dietsheet = new dietsheet();
+                $dietsheet->id = $id;
+                $dietsheet->name = $row['name_dietsheet'];
+                $dietsheet->description = $row['description_dietsheet'];
+                $dietsheet->minweightloss = $row['minweightloss'];
+                $dietsheet->maxweightloss = $row['maxweightloss'];
+                $dietsheet->type = $row['type'];
+                $dietsheet->lifestyles = array();
+                $result[$id] = $dietsheet;
+            }
+
+            $lifestyle = new lifestyle();
+            $lifestyle->id = $row['id_lifestyle'];
+            $lifestyle->name = $row['name_lifestyle'];
+            $lifestyle->description = $row['description_lifestyle'];
+            
+            $result[$id]->lifestyles[] = $lifestyle;
         }
         
         if ($this->debug)
