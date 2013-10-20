@@ -38,7 +38,7 @@ class htmlhelper {
             echo    "<tr class='cat-list-row".$i."'>";
             echo        "<td style='margin: 0px; padding: 0px 1px 0px 0px;' class='list-picture' headers='categorylist_header_picture'>";
             echo            "<a target='_blank' href='".$item->image."'>";
-            echo                "<img style='margin: 1px; width: 100%;' src=".$item->image." />";
+            echo                "<img style='margin: 1px; width: 100%;' src='".$item->image."' />";
             echo            "</a>";
             echo        "</td>";
             echo        "<td class='list-title' headers='categorylist_header_name'>";
