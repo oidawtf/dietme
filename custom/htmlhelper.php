@@ -55,7 +55,7 @@ class htmlhelper {
     }
     
     public static function dietselectionForm() {
-        echo "<form method='POST' action=''>";
+        echo "<form method='POST' action='diet-sheet-list'>";
         echo    "<input type='text' name='test' />";
         echo    "<div>";
         echo        "<input class='btn btn-primary' type='submit' type='submit' name='choice' value='Next' />";
@@ -63,6 +63,106 @@ class htmlhelper {
         echo "</form>";
     }
     
+    public static function dietSheetList($input) {
+        
+//            $item->id = $row['id_dietsheet'];
+//            $item->name = $row['name_dietsheet'];
+//            $item->description = $row['description_dietsheet'];
+//            $item->minweightloss = $row['minweightloss'];
+//            $item->maxweightloss = $row['maxweightloss'];
+//            $item->type = $row['type'];
+//            $item->lifestyle_id = $row['id_lifestyle'];
+//            $item->lifestyle_name = $row['name_lifestyle'];
+//            $item->lifestyle_description = $row['description_lifestyle'];
+        $i = 0;
+        echo "<div class='blog'>";
+        foreach ($input as $item) {
+            echo "<div class='items-row cols-1 row-".$i." row-fluid clearfix'>";
+            echo    "<div class='span12'>";
+            echo        "<div class='item column-1'>";
+            echo            "<div class='page-header'>";
+            echo                "<h2><a href='diet-sheet-details?dietsheet=".$item->id."'>".$item->name."</a></h2>";
+            echo            "</div>";
+            echo            $item->description;
+            echo        "</div>";
+            echo    "</div>";
+            echo "</div>";
+        }
+        echo "</div>";
+    }
+    
+    public static function dietSheetDetails($dietsheet, $recipes) {
+        
+        $document = JFactory::getDocument();
+        $document->addScript("http://getbootstrap.com/2.3.2/assets/js/bootstrap-carousel.js");
+        
+        $document->addScriptDeclaration("
+            $(document).ready(function() {
+    $('#myCarousel').carousel({
+    //options here
+    });
+});
+");
+    
+        
+              echo "<div class='carousel slide' id='myCarousel'>";
+              echo "  <div class='carousel-inner'>";
+              echo "    <div class='item next left'>";
+              echo "      <img alt='1' src=''>";
+              echo "    </div>";
+              echo "    <div class='item'>";
+              echo "      <img alt='2' src=''>";
+              echo "    </div>";
+              echo "    <div class='item active left'>";
+              echo "      <img alt='3' src=''>";
+              echo "    </div>";
+              echo "  </div>";
+              echo "</div>";
+
+        
+        
+        
+        echo "<div class='items-row cols-1 row-0 row-fluid clearfix'>";
+        echo    "<div class='span12'>";
+        echo        "<div class='item column-1'>";
+        echo            "<div class='page-header'>";
+        echo                "<h2><a href='diet-sheet-details?dietsheet=".$dietsheet->id."'>".$dietsheet->name."</a></h2>";
+        echo            "</div>";
+        
+        echo            "<div id='slide-recipes' class='accordion'>";
+        foreach ($recipes as $recipe) {
+            echo            "<div class='accordion-group'>";
+            echo                "<div class='accordion-heading'>";
+            echo                    "<strong>";
+            echo                        "<a class='accordion-toggle' data-toggle='collapse' data-parent='#slide-recipes' href='#recipe".$recipe->id."'>".$recipe->name."</a>";
+            echo                    "</strong>";
+            echo                "</div>";
+            echo                "<div id='recipe".$recipe->id."' class='accordion-body collapse'>";
+            echo                    "<div class='accordion-inner'>";
+            echo                        "<dl class='contact-address dl-horizontal'>";
+            echo                            "<dt>";
+            echo                                "<span class='jicons-icons'>";
+            echo                                    "<img alt='Address: ' src='/dietme_max/media/contacts/images/con_address.png'>";
+            echo                                "</span>";
+            echo                            "</dt>";
+            echo                            "<dd>";
+            echo                                "<span class='contact-street'>";
+            echo                                    $recipe->description;
+            echo                                    "<br>";
+            echo                                "</span>";
+            echo                            "</dd>";
+            echo                        "</dl>";
+            echo                    "</div>";
+            echo                "</div>";
+            echo            "</div>";
+
+        }
+        echo            "</div>";
+        
+        echo        "</div>";
+        echo    "</div>";
+        echo "</div>";
+    }
 }
 
 ?>

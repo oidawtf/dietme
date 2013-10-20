@@ -10,7 +10,7 @@
  *
  * @author admin
  */
-class dietsheet {
+class lifestyle {
 
     public $id;
     public $name;

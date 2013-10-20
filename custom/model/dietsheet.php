@@ -18,6 +18,10 @@ class dietsheet {
     public $minweightloss;
     public $maxweightloss;
     public $type;
+    public $lifestyle_id;
+    public $lifestyle_name;
+    public $lifestyle_description;
+    public $recipes;
     
 }
 
