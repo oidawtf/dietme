@@ -274,6 +274,130 @@ class dbService {
         
         return $result;
     }
+    
+    public function showUserInput() {
+        $connection = $this->openConnection();
+        
+        $sql = "
+            SELECT
+                concat(minweightloss,'-',maxweightloss) minmax
+            FROM dietsheets
+            ;";
+        
+        $query = mysql_query($sql);
+        
+        echo "<form action=\"form.php\" method=\"POST\">";
+        echo "<table align=\"center\" cellpadding = \"10\">";
+        
+        echo "<tr>";
+        echo "<td>Gewichtsabnahme</td>";
+        echo "<td>";
+        
+        $index = 1;
+        
+        while ($row = mysql_fetch_assoc($query))
+        {
+            echo "<input type=\"checkbox\" name=\"diet_".$index."\" value=\"".$row['minmax']."\" checked>".$row['minmax'];
+            $index++;
+        }
+        
+        echo "</td>";
+        echo "</tr>";
+        
+        echo "<tr>";
+        echo "<td>Programm</td>";
+        echo "<td>";
+        
+        $sql = "
+            SELECT
+                type
+            FROM dietsheets
+            ;";
+        
+        $query = mysql_query($sql);
+        
+        $index = 1;
+        
+        while ($row = mysql_fetch_assoc($query))
+        {
+            echo "<input type=\"checkbox\" name=\"kind_".$index."\" value=\"".$row['type']."\" checked>".$row['type'];
+            $index++;
+        }
+        
+        echo "</td>";
+        echo "</tr>";
+        
+        echo "<tr>";
+        echo "<td>Zeitdauer</td>";
+        echo "<td>";
+
+        echo "<input type=\"radio\" name=\"period\" value=\"14\"> 14 Tage";
+        echo "<input type=\"radio\" name=\"period\" value=\"21\"> 21 Tage";
+        echo "<input type=\"radio\" name=\"period\" value=\"31\" checked> 31 Tage (1 Monat)";
+        echo "<input type=\"radio\" name=\"period\" value=\"14\"> 14 Tage";
+        echo "<input type=\"radio\" name=\"period\" value=\"186\"> 186 Tage (6 Monate)";
+        
+        echo "</td>";
+        echo "</tr>";
+        
+        echo "<tr>";
+        echo "<td>Lebensstil</td>";
+        echo "<td>";
+        
+        $sql = "
+            SELECT
+                name
+            FROM lifestyles
+            ;";
+        
+        $query = mysql_query($sql);
+        
+        $index = 1;
+        
+        while ($row = mysql_fetch_assoc($query))
+        {
+            echo "<input type=\"checkbox\" name=\"lifestyle_".$index."\" value=\"".$row['name']."\" checked>".$row['name'];
+            $index++;
+        }
+        
+        echo "</td>";
+        echo "</tr>";
+        
+        echo "<tr>";
+        echo "<td>Zutaten</td>";
+        echo "<td>";
+        
+        $sql = "
+            SELECT
+                name
+            FROM recipes
+            ;";
+        
+        $query = mysql_query($sql);
+        
+        $index = 1;
+        
+        while ($row = mysql_fetch_assoc($query))
+        {
+            echo "<input type=\"checkbox\" name=\"habits_".$index."\" value=\"".$row['name']."\" checked>".$row['name'];
+            $index++;
+        }
+        
+        echo "</td>";
+        echo "</tr>";
+        
+        echo "<tr>";
+        echo "<td colspan=\"2\" align=\"center\">";
+        echo "<input type=\"submit\" value=\"Weiter\">";
+        echo "</td>";
+        echo "</tr>";
+        
+        echo "</table>";
+ 
+        echo "</form>";
+
+        $this->closeConnection($query);
+    }
 }
 
 ?>
