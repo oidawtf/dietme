@@ -53,8 +53,8 @@ class JConfig {
 	public $sef_suffix = '0';
 	public $unicodeslugs = '0';
 	public $feed_limit = '10';
-	public $log_path = '/var/www/vhost/oidawtf.com/dietme_max/html/logs';
-	public $tmp_path = '/var/www/vhost/oidawtf.com/dietme_max/html/tmp';
+	public $log_path = '/var/www/vhost/oidawtf.com/dietme/logs';
+	public $tmp_path = '/var/www/vhost/oidawtf.com/dietme/tmp';
 	public $lifetime = '15';
 	public $session_handler = 'database';
 	public $MetaRights = '';

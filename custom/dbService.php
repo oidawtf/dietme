@@ -313,7 +313,7 @@ class dbService {
         
         $this->closeConnection($query);
         
-        return $recipe;
+        return $result;
     }
     
     public function selectLifestyles($search = NULL) {
