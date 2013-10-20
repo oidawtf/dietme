@@ -56,18 +56,26 @@ class dbService {
         
         echo        "<tr>";
         echo            "<td>sql</td>";
-        echo            "<td><b>".$sql."</b></td>";
+        echo            "<td><b>";
+        echo                "<pre>";
+        echo                    var_dump($sql);
+        echo                "</pre>";
+        echo            "</b></td>";
         echo        "</tr>";
         echo        "<tr>";
         echo            "<td>query</td>";
         echo            "<td><b>";
-        echo                var_dump($query);
+        echo                "<pre>";
+        echo                    var_dump($query);
+        echo                "</pre>";
         echo            "</b></td>";
         echo        "</tr>";
         echo        "<tr>";
         echo            "<td>result</td>";
         echo            "<td><b>";
-        echo                var_dump($result);
+        echo                "<pre>";
+        echo                    var_dump($result);
+        echo                "</pre>";
         echo            "</b></td>";
         echo        "</tr>";
         echo    "</tbody>";
@@ -239,6 +247,9 @@ class dbService {
                 REI.name_recipe,
                 REI.description_recipe,
                 REI.image_recipe,
+                DR.day,
+                DR.times,
+                DR.meal,
                 REI.id_ingredients,
                 REI.count,
                 REI.name_ingredient,
@@ -292,16 +303,23 @@ class dbService {
         $result = array();
         while ($row = mysql_fetch_assoc($query))
         {
+            $day = $row['day'];
             $id = $row['id_recipe'];
             
-            if (!array_key_exists($id, $result)) {
+            if (!array_key_exists($day, $result)){
+                $result[$day] = array();
+            }
+            
+            if (!array_key_exists($id, $result[$day])) {
                 $recipe = new recipe();
                 $recipe->id = $id;
                 $recipe->name = $row['name_recipe'];
                 $recipe->description = $row['description_recipe'];
+                $recipe->times = $row['times'];
+                $recipe->meal = $row['meal'];
                 $recipe->image = $row['image_recipe'];
                 $recipe->ingredients = array();
-                $result[$id] = $recipe;
+                $result[$day][$id] = $recipe;
             }
             
             $ingredient = new ingredient();
@@ -314,7 +332,7 @@ class dbService {
             $ingredient->cost = $row['cost'];
             $ingredient->calories = $row['calories'];
             
-            $result[$id]->ingredients[] = $ingredient;
+            $result[$day][$id]->ingredients[] = $ingredient;
         }
         
         if ($this->debug)

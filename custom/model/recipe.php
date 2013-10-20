@@ -17,6 +17,9 @@ class recipe {
     public $description;
     public $image;
     public $ingredients;
+    public $times;
+    public $meal;
+
 }
 
 ?>

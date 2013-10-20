@@ -21,6 +21,15 @@ class dietsheet {
     public $lifestyles;
     public $recipes;
     
+    public function getLifestyles() {
+        $result = "";
+        
+        foreach ($this->lifestyles as $lifestyle)
+            $result = $result."".$lifestyle->name.", ";
+
+        $result = trim($result, ", ");
+        return $result;
+    }
 }
 
 ?>
