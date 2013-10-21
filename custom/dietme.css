@@ -1,0 +1,27 @@
+/* 
+    Document   : dietme
+    Created on : 21.10.2013, 00:32:34
+    Author     : admin
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+root { 
+    display: block;
+}
+
+.image-dietsheet {
+    margin: 0px 20px 15px 0px;
+    max-width: 200px;
+    float: left;
+}
+
+.image-recipe {
+    margin: 5px 0px 10px 0px;
+    max-width: 160px;
+}
+
+.image-ingredient {
+    margin: 1px;
+    width: 100%;
+}

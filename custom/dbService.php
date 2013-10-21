@@ -56,18 +56,26 @@ class dbService {
         
         echo        "<tr>";
         echo            "<td>sql</td>";
-        echo            "<td><b>".$sql."</b></td>";
+        echo            "<td><b>";
+        echo                "<pre>";
+        echo                    var_dump($sql);
+        echo                "</pre>";
+        echo            "</b></td>";
         echo        "</tr>";
         echo        "<tr>";
         echo            "<td>query</td>";
         echo            "<td><b>";
-        echo                var_dump($query);
+        echo                "<pre>";
+        echo                    var_dump($query);
+        echo                "</pre>";
         echo            "</b></td>";
         echo        "</tr>";
         echo        "<tr>";
         echo            "<td>result</td>";
         echo            "<td><b>";
-        echo                var_dump($result);
+        echo                "<pre>";
+        echo                    var_dump($result);
+        echo                "</pre>";
         echo            "</b></td>";
         echo        "</tr>";
         echo    "</tbody>";
@@ -149,8 +157,8 @@ class dbService {
     public function selectDietSheet($id) {
         $dietsheets = $this->selectDietSheets($id);
         if (count($dietsheets) > 0)
-            return $dietsheets[0];
-        
+            return reset($dietsheets);
+               
         return null;
     }
     
@@ -170,6 +178,7 @@ class dbService {
             SELECT
                 DS.id AS id_dietsheet,
                 DS.name AS name_dietsheet,
+                DS.image AS image_dietsheet,
                 DS.description AS description_dietsheet,
                 DS.minweightloss,
                 DS.maxweightloss,
@@ -198,17 +207,27 @@ class dbService {
         $result = array();
         while ($row = mysql_fetch_assoc($query))
         {
-            $item = new dietsheet();
-            $item->id = $row['id_dietsheet'];
-            $item->name = $row['name_dietsheet'];
-            $item->description = $row['description_dietsheet'];
-            $item->minweightloss = $row['minweightloss'];
-            $item->maxweightloss = $row['maxweightloss'];
-            $item->type = $row['type'];
-            $item->lifestyle_id = $row['id_lifestyle'];
-            $item->lifestyle_name = $row['name_lifestyle'];
-            $item->lifestyle_description = $row['description_lifestyle'];
-            $result[] = $item;
+            $id = $row['id_dietsheet'];
+            
+            if (!array_key_exists($id, $result)) {
+                $dietsheet = new dietsheet();
+                $dietsheet->id = $id;
+                $dietsheet->name = $row['name_dietsheet'];
+                $dietsheet->image = $row['image_dietsheet'];
+                $dietsheet->description = $row['description_dietsheet'];
+                $dietsheet->minweightloss = $row['minweightloss'];
+                $dietsheet->maxweightloss = $row['maxweightloss'];
+                $dietsheet->type = $row['type'];
+                $dietsheet->lifestyles = array();
+                $result[$id] = $dietsheet;
+            }
+
+            $lifestyle = new lifestyle();
+            $lifestyle->id = $row['id_lifestyle'];
+            $lifestyle->name = $row['name_lifestyle'];
+            $lifestyle->description = $row['description_lifestyle'];
+            
+            $result[$id]->lifestyles[] = $lifestyle;
         }
         
         if ($this->debug)
@@ -230,6 +249,9 @@ class dbService {
                 REI.name_recipe,
                 REI.description_recipe,
                 REI.image_recipe,
+                DR.day,
+                DR.times,
+                DR.meal,
                 REI.id_ingredients,
                 REI.count,
                 REI.name_ingredient,
@@ -283,16 +305,23 @@ class dbService {
         $result = array();
         while ($row = mysql_fetch_assoc($query))
         {
+            $day = $row['day'];
             $id = $row['id_recipe'];
             
-            if (!array_key_exists($id, $result)) {
+            if (!array_key_exists($day, $result)){
+                $result[$day] = array();
+            }
+            
+            if (!array_key_exists($id, $result[$day])) {
                 $recipe = new recipe();
                 $recipe->id = $id;
                 $recipe->name = $row['name_recipe'];
                 $recipe->description = $row['description_recipe'];
+                $recipe->times = $row['times'];
+                $recipe->meal = $row['meal'];
                 $recipe->image = $row['image_recipe'];
                 $recipe->ingredients = array();
-                $result[$id] = $recipe;
+                $result[$day][$id] = $recipe;
             }
             
             $ingredient = new ingredient();
@@ -305,7 +334,7 @@ class dbService {
             $ingredient->cost = $row['cost'];
             $ingredient->calories = $row['calories'];
             
-            $result[$id]->ingredients[] = $ingredient;
+            $result[$day][$id]->ingredients[] = $ingredient;
         }
         
         if ($this->debug)
