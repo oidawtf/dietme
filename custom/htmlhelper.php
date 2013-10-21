@@ -15,9 +15,23 @@ class htmlhelper {
 
     private static $initialized = false;
     
+    private static function getRoot() {
+        $result = "";
+        
+        $path = explode('/', $_SERVER['PHP_SELF']);
+        foreach ($path as $part) {
+            $pos = strpos($part, 'index.php');
+            if ($pos !== false)
+                break;
+            $result = $result."".$part."/";
+        }
+        
+        echo $result;
+    }
+    
     public static function initialize() {
         $document = JFactory::getDocument();
-        $document->addStyleSheet("/dietme/custom/dietme.css");
+        $document->addStyleSheet(htmlhelper::getRoot()."custom/dietme.css");
     }    
     
     public static function image($src, $class = NULL, $alt = NULL) {
