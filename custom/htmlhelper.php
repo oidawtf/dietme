@@ -26,7 +26,7 @@ class htmlhelper {
             $result = $result."".$part."/";
         }
         
-        echo $result;
+        return $result;
     }
     
     public static function initialize() {
@@ -34,18 +34,11 @@ class htmlhelper {
         $document->addStyleSheet(htmlhelper::getRoot()."custom/dietme.css");
     }
     
-    public static function initializeJquery() {
-        $document = JFactory::getDocument();
-        $document->addScript(htmlhelper::getRoot()."custom/jquery.js");
-    }
-    
     public static function image($src, $class = NULL, $alt = NULL) {
-        
-        if (!htmlhelper::$initialized) {
+        if (!htmlhelper::$initialized)
             htmlhelper::initialize();
-        }
-        
-       echo "<a target='_blank' href='".$src."'>";
+
+        echo "<a target='_blank' href='".$src."'>";
        echo     "<img class='".$class."' src='".$src."' alt='".$alt."' />";
        echo "</a>";
     }
@@ -92,7 +85,6 @@ class htmlhelper {
     
     public static function dietselectionForm($input) {
         echo "<form method='POST' action='diet-sheet-list'>";
-        
         
         $index = 1;
         
@@ -170,7 +162,6 @@ class htmlhelper {
         echo "</tr>";
         
         echo "</table>";
-        
         
         echo    "<div>";
         echo        "<input class='btn btn-primary' type='submit' type='submit' name='choice' value='Next' />";
