@@ -71,9 +71,9 @@ class htmlhelper {
 	echo "</table>";
     }
     
-    public static function dietselectionForm() {
+    public static function dietselectionForm($input) {
         echo "<form method='POST' action='diet-sheet-list'>";
-        echo    "<input type='text' name='test' />";
+        htmlhelper::userInput($input);
         echo    "<div>";
         echo        "<input class='btn btn-primary' type='submit' type='submit' name='choice' value='Next' />";
         echo    "</div>";
@@ -174,11 +174,10 @@ class htmlhelper {
         echo "</div>";
     }
     
-    public static function userInput($input)
+    private static function userInput($input)
     {
         $index = 1;
         
-        echo "<form action=\"form.php\" method=\"POST\">";
         echo "<table align=\"center\" cellpadding = \"10\">";
         
         echo "<tr>";
@@ -252,15 +251,7 @@ class htmlhelper {
         echo "</td>";
         echo "</tr>";
         
-        echo "<tr>";
-        echo "<td colspan=\"2\" align=\"center\">";
-        echo "<input type=\"submit\" value=\"Weiter\">";
-        echo "</td>";
-        echo "</tr>";
-        
         echo "</table>";
- 
-        echo "</form>";
     }
 }
 

@@ -457,6 +457,9 @@ class dbService {
             $result_dietsheet[] = $dietsheet;
         }
         
+        if ($this->debug)
+            $this->displayResult($connection, $sql, $query, $result_dietsheet);
+        
         $sql = "
             SELECT
                 name
@@ -472,6 +475,9 @@ class dbService {
             $result_lifestyle[] = $lifestyle;
         }
         
+        if ($this->debug)
+            $this->displayResult($connection, $sql, $query, $result_lifestyle);
+        
         $sql = "
             SELECT
                 name
@@ -486,6 +492,9 @@ class dbService {
             $recipe->name = $row['name'];
             $result_recipe[] = $recipe;
         }
+        
+        if ($this->debug)
+            $this->displayResult($connection, $sql, $query, $result_recipe);
 
         $this->closeConnection($query);
         
