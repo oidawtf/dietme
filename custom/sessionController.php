@@ -14,6 +14,10 @@ class sessionController {
     
     const sessionIDSelection = 'dietme_selection';
     
+    public static function hasSelection() {
+        return $_SESSION[self::sessionIDSelection] != NULL;
+    }
+    
     public static function saveSelection($selection) {
         $_SESSION[self::sessionIDSelection] = $selection;
     }
