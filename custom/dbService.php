@@ -400,74 +400,33 @@ class dbService {
         return $result;
     }
     
-    public function showUserInput() {
+    public function selectUserInput() {
         $connection = $this->openConnection();
         
-        $sql = "
-            SELECT
-                concat(minweightloss,'-',maxweightloss) minmax
-            FROM dietsheets
-            ;";
+        $result = array();
         
-        $query = mysql_query($sql);
-        
-        echo "<form action=\"form.php\" method=\"POST\">";
-        echo "<table align=\"center\" cellpadding = \"10\">";
-        
-        echo "<tr>";
-        echo "<td>Gewichtsabnahme</td>";
-        echo "<td>";
-        
-        $index = 1;
-        
-        while ($row = mysql_fetch_assoc($query))
-        {
-            echo "<input type=\"checkbox\" name=\"diet_".$index."\" value=\"".$row['minmax']."\" checked>".$row['minmax'];
-            $index++;
-        }
-        
-        echo "</td>";
-        echo "</tr>";
-        
-        echo "<tr>";
-        echo "<td>Programm</td>";
-        echo "<td>";
+        $result_dietsheet = array();
+        $result_lifestyle = array();
+        $result_recipe  = array();
         
         $sql = "
             SELECT
+                minweightloss,
+                maxweightloss,
                 type
             FROM dietsheets
             ;";
         
         $query = mysql_query($sql);
         
-        $index = 1;
-        
         while ($row = mysql_fetch_assoc($query))
         {
-            echo "<input type=\"checkbox\" name=\"kind_".$index."\" value=\"".$row['type']."\" checked>".$row['type'];
-            $index++;
+            $dietsheet = new dietsheet();
+            $dietsheet->minweightloss = $row['minweightloss'];
+            $dietsheet->maxweightloss = $row['maxweightloss'];
+            $dietsheet->type = $row['type'];
+            $result_dietsheet[] = $dietsheet;
         }
-        
-        echo "</td>";
-        echo "</tr>";
-        
-        echo "<tr>";
-        echo "<td>Zeitdauer</td>";
-        echo "<td>";
-
-        echo "<input type=\"radio\" name=\"period\" value=\"14\"> 14 Tage";
-        echo "<input type=\"radio\" name=\"period\" value=\"21\"> 21 Tage";
-        echo "<input type=\"radio\" name=\"period\" value=\"31\" checked> 31 Tage (1 Monat)";
-        echo "<input type=\"radio\" name=\"period\" value=\"14\"> 14 Tage";
-        echo "<input type=\"radio\" name=\"period\" value=\"186\"> 186 Tage (6 Monate)";
-        
-        echo "</td>";
-        echo "</tr>";
-        
-        echo "<tr>";
-        echo "<td>Lebensstil</td>";
-        echo "<td>";
         
         $sql = "
             SELECT
@@ -477,20 +436,12 @@ class dbService {
         
         $query = mysql_query($sql);
         
-        $index = 1;
-        
         while ($row = mysql_fetch_assoc($query))
         {
-            echo "<input type=\"checkbox\" name=\"lifestyle_".$index."\" value=\"".$row['name']."\" checked>".$row['name'];
-            $index++;
+            $lifestyle = new lifestyle();
+            $lifestyle->name = $row['name'];
+            $result_lifestyle[] = $lifestyle;
         }
-        
-        echo "</td>";
-        echo "</tr>";
-        
-        echo "<tr>";
-        echo "<td>Zutaten</td>";
-        echo "<td>";
         
         $sql = "
             SELECT
@@ -500,28 +451,20 @@ class dbService {
         
         $query = mysql_query($sql);
         
-        $index = 1;
-        
         while ($row = mysql_fetch_assoc($query))
         {
-            echo "<input type=\"checkbox\" name=\"habits_".$index."\" value=\"".$row['name']."\" checked>".$row['name'];
-            $index++;
+            $recipe = new recipe();
+            $recipe->name = $row['name'];
+            $result_recipe[] = $recipe;
         }
-        
-        echo "</td>";
-        echo "</tr>";
-        
-        echo "<tr>";
-        echo "<td colspan=\"2\" align=\"center\">";
-        echo "<input type=\"submit\" value=\"Weiter\">";
-        echo "</td>";
-        echo "</tr>";
-        
-        echo "</table>";
- 
-        echo "</form>";
 
         $this->closeConnection($query);
+        
+        $result[0] = $result_dietsheet;
+        $result[1] = $result_lifestyle;
+        $result[2] = $result_recipe;
+        
+        return $result;
     }
 }
 
