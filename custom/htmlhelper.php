@@ -101,6 +101,14 @@ class htmlhelper {
     }
     
     public static function dietSheetList($list) {
+        
+        echo "<pre>";
+        echo "&#36;_POST:";
+        echo "<br />";
+        echo "<br />";
+        var_dump($_POST);
+        echo "</pre>";
+        
         $i = 0;
         echo "<div class='blog'>";
         foreach ($list as $dietsheet) {
