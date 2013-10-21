@@ -32,7 +32,12 @@ class htmlhelper {
     public static function initialize() {
         $document = JFactory::getDocument();
         $document->addStyleSheet(htmlhelper::getRoot()."custom/dietme.css");
-    }    
+    }
+    
+    public static function initializeJquery() {
+        $document = JFactory::getDocument();
+        $document->addScript(htmlhelper::getRoot()."custom/jquery.js");
+    }
     
     public static function image($src, $class = NULL, $alt = NULL) {
         
