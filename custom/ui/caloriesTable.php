@@ -34,7 +34,7 @@ class caloriesTable {
             echo            "<h5>".$item->name."</h5>";
             echo            "<p>".$item->description."</p>";
             echo        "</td>";
-            echo        "<td class='list-author' headers='categorylist_header_amount'>".$item->amount."</td>";
+            echo        "<td class='list-author' headers='categorylist_header_amount'>".$item->amount." ".$item->amounttype."</td>";
             echo        "<td class='list-edit' headers='categorylist_header_calories'>".$item->calories."</td>";
             echo    "</tr>";
             $i++;

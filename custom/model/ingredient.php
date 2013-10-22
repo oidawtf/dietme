@@ -10,8 +10,10 @@ class ingredient {
     public $image;
     public $cost;
     public $calories;
-    // amount is the weight in g (1000g == 1kg)
+    // amount is the weight
     public $amount;
+    // the type of of the weight / or as liters
+    public $amounttype;
     // count is the count of how much is needed of this instance for a specific recipe
     public $count;
     

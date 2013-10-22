@@ -125,6 +125,7 @@ class dbService {
                 I.image,
                 I.cost,
                 I.amount,
+                I.amounttype,
                 I.calories
             FROM ingredients AS I
             ".$where."
@@ -142,6 +143,7 @@ class dbService {
             $item->image = $row['image'];
             $item->cost = $row['cost'];
             $item->amount = $row['amount'];
+            $item->amounttype = $row['amounttype'];
             $item->calories = $row['calories'];
             $result[] = $item;
         }
@@ -259,6 +261,7 @@ class dbService {
                 REI.image_ingredient,
                 REI.cost,
                 REI.amount,
+                REI.amounttype,
                 REI.calories
             FROM
                 _dietsheets_recipes AS DR
@@ -275,6 +278,7 @@ class dbService {
                         RI.image AS image_ingredient,
                         RI.cost,
                         RI.amount,
+                        RI.amounttype,
                         RI.calories
                     FROM
                         recipes AS RE
@@ -288,6 +292,7 @@ class dbService {
                                 IG.image,
                                 IG.cost,
                                 IG.amount,
+                                IG.amounttype,
                                 IG.calories
                             FROM
                                 _recipes_ingredients AS RI,
@@ -327,6 +332,7 @@ class dbService {
             $ingredient = new ingredient();
             $ingredient->id = $row['id_ingredients'];
             $ingredient->amount = $row['amount'];
+            $ingredient->amounttype = $row['amounttype'];
             $ingredient->count = $row['count'];
             $ingredient->name = $row['name_ingredient'];
             $ingredient->description = $row['description_ingredient'];
