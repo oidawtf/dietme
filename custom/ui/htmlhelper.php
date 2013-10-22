@@ -30,13 +30,17 @@ class htmlhelper {
     }
     
     public static function initialize() {
+        if (htmlhelper::$initialized)
+            return;
+        
         $document = JFactory::getDocument();
         $document->addStyleSheet(htmlhelper::getRoot()."custom/dietme.css");
+        //$document->addStyleSheet(htmlhelper::getRoot()."media/system/css/bootstrap.css");
     }
     
     public static function image($src, $class = NULL, $alt = NULL) {
-       if (!htmlhelper::$initialized)
-           htmlhelper::initialize();
+       
+        htmlhelper::initialize();
 
        echo "<a target='_blank' href='".$src."'>";
        echo     "<img class='".$class."' src='".$src."' alt='".$alt."' />";
