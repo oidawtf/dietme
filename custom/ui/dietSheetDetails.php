@@ -14,11 +14,18 @@
 class dietSheetDetails {
     
     public static function show($dietsheet) {
+        $days = count($dietsheet->recipes);
+        
+        if ($_GET['days'] != NULL)
+            $days = $_GET['days'];
+        
+        $times = ceil($days / count($dietsheet->recipes));
+        
         echo "<div class='items-row cols-1 row-0 row-fluid clearfix'>";
         echo    "<div class='span12'>";
         echo        "<div class='item column-1'>";
         
-        htmlhelper::dietSheetSimple($dietsheet);
+        htmlhelper::dietSheetSimple($dietsheet, $times);
         
         echo            "<div id='slide-days' class='accordion'>";
         for ($i = 1; $i <= count($dietsheet->recipes); $i++) {
@@ -29,13 +36,13 @@ class dietSheetDetails {
             echo                "<div class='accordion-heading'>";
             echo                    "<strong>";
             echo                        "<a class='accordion-toggle' data-toggle='collapse' data-parent='#slide-days' href='#day".$i."'>";
-            echo                            "Day ".($i);
-            echo                            "<div class='right'>€ ".$dietsheet->getSumCostDay($i)."</div>";
+            echo                            $times."x Day ".($i);
+            echo                            "<div class='right'>€ ".$dietsheet->getSumCostDay($i, $times)."</div>";
             echo                        "</a>";
             echo                    "</strong>";
             echo                "</div>";
             echo                "<div id='day".$i."' class='accordion-body collapse'>";
-            echo                    "<div class='accordion-inner'>";
+            echo                    "<div class='accordion-inner padding5'>";
             
             echo                        "<div id='slide-recipes".$i."' class='accordion'>";
             foreach ($dietsheet->recipes[$i] as $recipe) {
@@ -49,7 +56,7 @@ class dietSheetDetails {
                 echo                                "</strong>";
                 echo                            "</div>";
                 echo                            "<div id='recipe".$i."_".$recipe->id."' class='accordion-body collapse'>";
-                echo                                "<div class='accordion-inner'>";
+                echo                                "<div class='accordion-inner padding5'>";
                 echo                                    "<dl class='contact-address dl-horizontal'>";
                 echo                                        "<dt>";
                 htmlhelper::image($recipe->getImage(), "image-recipe");

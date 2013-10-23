@@ -110,8 +110,8 @@ class htmlhelper {
         dietselectionForm::show($input);
     }
     
-    public static function dietSheetSimple($dietsheet) {
-        dietSheetSimple::show($dietsheet);
+    public static function dietSheetSimple($dietsheet, $times = NULL, $days = NULL) {
+        dietSheetSimple::show($dietsheet, $times, $days);
     }
     
     public static function dietSheetList($list) {

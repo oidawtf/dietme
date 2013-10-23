@@ -13,13 +13,16 @@
 
 class dietSheetSimple {
     
-    public static function show($dietsheet) {
+    public static function show($dietsheet, $times = 1, $days = NULL) {
         echo "<div class='page-header'>";
         htmlhelper::image($dietsheet->getImage(), "image-dietsheet");
         echo    "<h2>";
-        echo        "<a href='diet-sheet-details?dietsheet=".$dietsheet->id."'>";
+        $get = "?dietsheet=".$dietsheet->id;
+        if ($days != NULL)
+            $get = $get."&days=".$days;
+        echo        "<a href='diet-sheet-details".$get."'>";
         echo            $dietsheet->name;
-        $sum = $dietsheet->getSumCost();
+        $sum = $dietsheet->getSumCost($times);
         if ($sum != null)
             echo        "<div class='right'>€ ".$sum."</div>";
         echo        "</a>";

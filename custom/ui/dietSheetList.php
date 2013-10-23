@@ -22,13 +22,14 @@ class dietSheetList {
         var_dump($_POST);
         echo "</pre>";
         
+        $period = $_POST['period'];
         $i = 0;
         echo "<div class='blog'>";
         foreach ($list as $dietsheet) {
             echo "<div class='items-row cols-1 row-".$i." row-fluid clearfix'>";
             echo    "<div class='span12'>";
             echo        "<div class='item column-1'>";
-            htmlhelper::dietSheetSimple($dietsheet);
+            htmlhelper::dietSheetSimple($dietsheet, 1, $period);
             echo        "</div>";
             echo    "</div>";
             echo "</div>";
