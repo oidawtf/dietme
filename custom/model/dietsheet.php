@@ -41,6 +41,30 @@ class dietsheet {
         
         return $this->image;
     }
+    
+    public function getSumCost($times = 1) {
+        $result = 0;
+        
+        if ($this->recipes == null)
+            return null;
+        
+        for ($i = 1; $i <= count($this->recipes); $i++)
+            $result = $result + $this->getSumCostDay($i, $times);
+        
+        return $result;
+    }
+    
+    public function getSumCostDay($day, $times = 1) {
+        $result = 0;
+        
+        if ($this->recipes == null || $this->recipes[$day] == null)
+            return $result;
+        
+        foreach ($this->recipes[$day] as $recipe)
+            $result = $result + $recipe->getSumCost();
+        
+        return $result * $times;
+    }
 }
 
 ?>

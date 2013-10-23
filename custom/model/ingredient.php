@@ -25,6 +25,10 @@ class ingredient {
         return $this->image;
     }
     
+    public function getSumCost() {
+        return $this->count * $this->cost;
+    }
+    
 }
 
 ?>

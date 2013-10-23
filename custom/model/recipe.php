@@ -30,6 +30,17 @@ class recipe {
         return $this->image;
     }
 
+    public function getSumCost() {
+        $result = 0;
+        
+        if ($this->ingredients == null)
+            return $result;
+        
+        foreach ($this->ingredients as $ingredient)
+            $result = $result + $ingredient->getSumCost();
+        
+        return $result * $this->times;
+    }
 }
 
 ?>

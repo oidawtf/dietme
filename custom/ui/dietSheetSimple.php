@@ -16,7 +16,15 @@ class dietSheetSimple {
     public static function show($dietsheet) {
         echo "<div class='page-header'>";
         htmlhelper::image($dietsheet->getImage(), "image-dietsheet");
-        echo    "<h2><a href='diet-sheet-details?dietsheet=".$dietsheet->id."'>".$dietsheet->name."</a></h2>";
+        echo    "<h2>";
+        echo        "<a href='diet-sheet-details?dietsheet=".$dietsheet->id."'>";
+        echo            $dietsheet->name;
+        $sum = $dietsheet->getSumCost();
+        if ($sum != null)
+            echo        "<div class='right'>€ ".$sum."</div>";
+        echo        "</a>";
+        echo    "</h2>";
+        
         echo "</div>";
         echo "<div class='article-info muted'>";
         echo     "<dl class=article-info>";
