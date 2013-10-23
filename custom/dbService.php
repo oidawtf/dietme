@@ -240,6 +240,117 @@ class dbService {
         return $result;
     }
     
+    public function selectIngredientsByDietsheet($id) {
+        $connection = $this->openConnection();
+        
+        $id = $this->format($id);
+        
+        $sql = "
+            SELECT
+                REI.id_recipe,
+                REI.name_recipe,
+                REI.description_recipe,
+                REI.image_recipe,
+                DR.day,
+                DR.times,
+                DR.meal,
+                REI.id_ingredients,
+                REI.count,
+                REI.name_ingredient,
+                REI.description_ingredient,
+                REI.image_ingredient,
+                REI.cost,
+                REI.amount,
+                REI.amounttype,
+                REI.calories
+            FROM
+                _dietsheets_recipes AS DR
+                RIGHT OUTER JOIN (
+                    SELECT
+                        RE.id AS id_recipe,
+                        RE.name AS name_recipe,
+                        RE.description AS description_recipe,
+                        RE.image AS image_recipe,
+                        RI.id_ingredients,
+                        RI.count,
+                        RI.name AS name_ingredient,
+                        RI.description AS description_ingredient,
+                        RI.image AS image_ingredient,
+                        RI.cost,
+                        RI.amount,
+                        RI.amounttype,
+                        RI.calories
+                    FROM
+                        recipes AS RE
+                        LEFT OUTER JOIN (
+                            SELECT
+                                RI.f_recipes AS id_recipes,
+                                RI.f_ingredients AS id_ingredients,
+                                RI.count,
+                                IG.name,
+                                IG.description,
+                                IG.image,
+                                IG.cost,
+                                IG.amount,
+                                IG.amounttype,
+                                IG.calories
+                            FROM
+                                _recipes_ingredients AS RI,
+                                ingredients AS IG
+                            WHERE
+                                RI.f_ingredients = IG.id
+                        ) AS RI ON RI.id_recipes = RE.id
+                ) AS REI ON REI.id_recipe = DR.f_recipes
+            WHERE
+                DR.f_dietsheets = '".$id."'
+            ;";
+        
+        $query = mysql_query($sql);
+        
+        $result = array();
+        while ($row = mysql_fetch_assoc($query))
+        {
+            $id = $row['id_ingredients'];
+            
+            if (array_key_exists($id, $result)){
+                $result[$id]->count = $result[$id]->count + $row['count'] * $row['times'];
+                continue;
+            }
+            
+            $ingredient = new ingredient();
+            $ingredient->id = $id;
+            $ingredient->amount = $row['amount'];
+            $ingredient->amounttype = $row['amounttype'];
+            $ingredient->count = $row['count'] * $row['times'];
+            $ingredient->name = $row['name_ingredient'];
+            $ingredient->description = $row['description_ingredient'];
+            $ingredient->image = $row['image_ingredient'];
+            $ingredient->cost = $row['cost'];
+            $ingredient->calories = $row['calories'];
+            
+            $result[$id] = $ingredient;
+        }
+        
+        if ($this->debug) {
+            $sum = 0;
+            echo "<pre>";
+            foreach ($result as $ing) {
+                echo $ing->count."x ".$ing->name." --> € ".$ing->count * $ing->cost."<br />";
+                $sum = $sum + $ing->count * $ing->cost;
+            }
+            echo "<b>SUM: € ".$sum."</b>";
+            echo "<br />";
+            echo "<br />";
+            echo "Tipp: Add ?dietsheet=[id of dietsheet] to the url to display a different one (e.g.: ?dietsheet=2)<br />";
+            echo "</pre>";
+            $this->displayResult($connection, $sql, $query, $result);
+        }
+        
+        $this->closeConnection($query);
+        
+        return $result;
+    }
+    
     public function selectRecipesByDietsheet($id) {
         $connection = $this->openConnection();
         
