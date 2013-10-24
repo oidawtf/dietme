@@ -14,6 +14,8 @@
 class dietselectionForm {
     
     public static function show($input) {
+        htmlhelper::initialize();
+        
         echo "<form method='POST' action='diet-sheet-list'>";
         
         $index = 1;
