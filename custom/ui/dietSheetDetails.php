@@ -67,7 +67,7 @@ class dietSheetDetails {
                 echo                                            "</span>";
                 echo                                        "</dd>";
                 
-                 echo                                                "<table class='category table table-striped table-bordered table-hover margin0'>";
+                echo                                                "<table class='category table table-striped table-bordered table-hover margin0'>";
                 echo                                                    "<thead>";
                 echo                                                        "<tr>";
                 echo                                                            "<th>Name</th>";
@@ -107,7 +107,7 @@ class dietSheetDetails {
         echo        "<form method='GET' action='order-ingredients'>";
         echo            "<input type='hidden' name='dietsheet' value='".$dietsheet->id."' />";
         echo            "<input type='hidden' name='times' value='".$times."' />";
-        echo            "<input class='btn btn-primary' type='submit' type='submit' value='Order' />";
+        echo            "<input class='btn btn-primary right' type='submit' type='submit' value='Order' />";
         echo        "</form>";
         echo    "</div>";
         echo "</div>";
