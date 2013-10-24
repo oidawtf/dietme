@@ -104,7 +104,11 @@ class dietSheetDetails {
         echo            "</div>";
         
         echo        "</div>";
-        echo        "<input class='btn btn-primary' type='submit' type='submit' name='order' value='Order' />";
+        echo        "<form method='GET' action='order-ingredients'>";
+        echo            "<input type='hidden' name='dietsheet' value='".$dietsheet->id."' />";
+        echo            "<input type='hidden' name='times' value='".$times."' />";
+        echo            "<input class='btn btn-primary' type='submit' type='submit' value='Order' />";
+        echo        "</form>";
         echo    "</div>";
         echo "</div>";
     }  

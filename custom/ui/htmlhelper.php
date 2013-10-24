@@ -122,6 +122,9 @@ class htmlhelper {
         dietSheetDetails::show($dietsheet);
     }
     
+    public static function orderForm($input) {
+        orderForm::show($input);
+    }
 }
 
 ?>
