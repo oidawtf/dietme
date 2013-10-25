@@ -35,6 +35,7 @@ class htmlhelper {
         
         $document = JFactory::getDocument();
         $document->addStyleSheet(htmlhelper::getRoot()."custom/dietme.css");
+        $document->addStyleSheet(htmlhelper::getRoot()."custom/userinput.css");
         //$document->addStyleSheet(htmlhelper::getRoot()."media/system/css/bootstrap.css");
     }
     
