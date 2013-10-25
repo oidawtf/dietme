@@ -556,7 +556,7 @@ class dbService {
         $result_recipe  = array();
         
         $sql = "
-            SELECT
+            SELECT DISTINCT
                 minweightloss,
                 maxweightloss,
                 type
