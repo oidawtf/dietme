@@ -1,0 +1,60 @@
+.cssform_userinput p{
+width: 300px;
+clear: left;
+margin: 0;
+padding: 5px 0 8px 0;
+padding-left: 155px; /*width of left column containing the label elements*/
+border-bottom: 1px dashed gray;
+}
+
+.cssform_userinput p:last-of-type{
+border-bottom: none;
+}
+
+.cssform_userinput label{
+font-weight: bold;
+float: left;
+margin-left: -155px; /*width of left column*/
+width: 150px; /*width of labels. Should be smaller than left column (155px) to create some right margin*/
+}
+
+.cssform_userinput input[type="text"]{ /*width of text boxes. IE6 does not understand this attribute*/
+width: 180px;
+}
+
+.cssform_userinput textarea{
+width: 250px;
+height: 150px;
+}
+
+/*.threepxfix class below:
+Targets IE6- ONLY. Adds 3 pixel indent for multi-line form contents.
+to account for 3 pixel bug: http://www.positioniseverything.net/explorer/threepxtest.html
+*/
+
+* html .threepxfix{
+margin-left: 3px;
+}
+
+@media screen and (max-width: 480px){ /* responsive form settings, when window width is 480px or less */
+
+	.cssform_userinput p{
+		padding-left: 0;
+		width: auto;
+		padding-bottom: 1em;
+	}
+
+	.cssform_userinput label{
+		float: none;
+		display: block;
+		margin-left: 0;
+	}
+
+	.cssform_userinput input[type="text"]{ /*width of text boxes. IE6 does not understand this attribute*/
+		width: 95%;
+	}
+	
+	.cssform_userinput textarea{
+		width: 95%;
+	}
+}
