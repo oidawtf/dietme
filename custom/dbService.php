@@ -157,7 +157,16 @@ class dbService {
     }
     
     public function selectDietSheet($id) {
-        $dietsheets = $this->selectDietSheets($id);
+        $id = $this->format($id);
+
+        $where = NULL;
+        if ($id != NULL)
+            $where = "
+                WHERE
+                DS.id = '".$id."'
+                    ";
+        
+        $dietsheets = $this->selectDietSheetsIntern($where);
         if (count($dietsheets) > 0)
             return reset($dietsheets);
                
@@ -165,16 +174,13 @@ class dbService {
     }
     
     public function selectDietSheets($search = NULL) {
-        $connection = $this->openConnection();
-        
         $search = $this->format($search);
-
-        $where = "";
-        if ($search != NULL)
-            $where = "
-                WHERE
-                DS.id = '".$search."'
-                    ";
+        
+        return $this->selectDietSheetsIntern($search);
+    }
+    
+    private function selectDietSheetsIntern($where = NULL) {
+        $connection = $this->openConnection();
         
         $sql = "
             SELECT
