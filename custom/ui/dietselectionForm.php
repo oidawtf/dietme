@@ -16,88 +16,69 @@ class dietselectionForm {
     public static function show($input) {
         htmlhelper::initialize();
         
-        echo "<form method='POST' action='diet-sheet-list'>";
-        
         $index = 1;
         
-        echo "<table align=\"center\" cellpadding = \"10\">";
+        echo "<form method='POST' action='diet-sheet-list' class=\"cssform_userinput\">";
         
-        echo "<tr>";
-        echo "<td>Gewichtsabnahme</td>";
-        echo "<td>";
+        echo "<p>";
+        echo "<label for=\"desired_weight_loss\">Desired weight loss: </label>";
         
         foreach ($input[0] as $item_dietsheet)
         {
-            echo "<input type=\"checkbox\" name=\"diet_".$index."\" value=\"".$item_dietsheet->minweightloss."-".$item_dietsheet->maxweightloss."\" checked>".$item_dietsheet->minweightloss." - ".$item_dietsheet->maxweightloss;
+            echo "<input type=\"checkbox\" name=\"weight_loss_".$index."\" checked /> ".$item_dietsheet->minweightloss."-".$item_dietsheet->maxweightloss." <br>";
             $index++;
         }
-          
-        echo "</td>";
-        echo "</tr>";
         
-        echo "<tr>";
-        echo "<td>Programm</td>";
-        echo "<td>";
+        echo "</p>";
         
-        $index = 1;
+        echo "<p>";
+        echo "<label for=\"kind_of_diet\">Kind of diet: </label>";
         
-        foreach ($input[0] as $item_dietsheet_type)
+        foreach ($input[0] as $item_dietsheet)
         {
-            echo "<input type=\"checkbox\" name=\"kind_".$index."\" value=\"".$item_dietsheet_type->type."\" checked>".$item_dietsheet_type->type;
+            echo "<input type=\"checkbox\" name=\"kind_diet_".$index."\" checked /> ".$item_dietsheet->type." <br>";
             $index++;
         }
         
-        echo "</td>";
-        echo "</tr>";
+        echo "</p>";
         
-        echo "<tr>";
-        echo "<td>Zeitdauer</td>";
-        echo "<td>";
-
-        echo "<input type=\"radio\" name=\"period\" value=\"14\"> 14 Tage";
-        echo "<input type=\"radio\" name=\"period\" value=\"21\"> 21 Tage";
-        echo "<input type=\"radio\" name=\"period\" value=\"31\" checked> 31 Tage (1 Monat)";
-        echo "<input type=\"radio\" name=\"period\" value=\"14\"> 14 Tage";
-        echo "<input type=\"radio\" name=\"period\" value=\"186\"> 186 Tage (6 Monate)";
+        echo "<p>";
+        echo "<label for=\"period_of_diet\">Period of diet: </label>";
         
-        echo "</td>";
-        echo "</tr>";
+        echo "<input type=\"checkbox\" name=\"period_diet_1\" checked /> 14 days <br>";
+        echo "<input type=\"checkbox\" name=\"period_diet_2\" checked /> 21 days <br>";
+        echo "<input type=\"checkbox\" name=\"period_diet_3\" checked /> 1 month <br>";
+        echo "<input type=\"checkbox\" name=\"period_diet_4\" checked /> 6 months <br>";
         
-        echo "<tr>";
-        echo "<td>Lebensstil</td>";
-        echo "<td>";
+        echo "</p>";
         
-        $index = 1;
+        echo "<p>";
+        echo "<label for=\"lifestyle\">Lifestyle: </label>";
         
         foreach ($input[1] as $item_lifestyle)
         {
-            echo "<input type=\"checkbox\" name=\"lifestyle_".$index."\" value=\"".$item_lifestyle->name."\" checked>".$item_lifestyle->name;
+            echo "<input type=\"checkbox\" name=\"lifestyle_".$index."\" checked /> ".$item_lifestyle->name." <br>";
             $index++;
         }
         
-        echo "</td>";
-        echo "</tr>";
+        echo "</p>";
         
-        echo "<tr>";
-        echo "<td>Zutaten</td>";
-        echo "<td>";
-        
-        $index = 1;
+        echo "<p>";
+        echo "<label for=\"eating_habits\">Eating habits: </label>";
         
         foreach ($input[2] as $item_recipe)
         {
-            echo "<input type=\"checkbox\" name=\"habits_".$index."\" value=\"".$item_recipe->name."\" checked>".$item_recipe->name;
+            echo "<input type=\"checkbox\" name=\"habit_".$index."\" checked /> ".$item_recipe->name." <br>";
             $index++;
         }
         
-        echo "</td>";
-        echo "</tr>";
+        echo "</p>";
         
-        echo "</table>";
-        
-        echo    "<div>";
-        echo        "<input class='btn btn-primary' type='submit' type='submit' name='choice' value='Next' />";
-        echo    "</div>";
+        echo "<br>";
+        echo "<div>";
+        echo "<input type=\"submit\" value=\"Next\" />";
+        echo "</div>";
+
         echo "</form>";
     }
 }
