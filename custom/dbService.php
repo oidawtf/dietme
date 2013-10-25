@@ -561,6 +561,7 @@ class dbService {
                 maxweightloss,
                 type
             FROM dietsheets
+            ORDER by minweightloss
             ;";
         
         $query = mysql_query($sql);
