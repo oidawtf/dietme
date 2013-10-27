@@ -25,7 +25,7 @@ class dietselectionForm {
         
         foreach ($input[0] as $item_dietsheet)
         {
-            echo "<input type=\"checkbox\" name=\"weight_loss_".$index."\" checked /> ".$item_dietsheet->minweightloss."-".$item_dietsheet->maxweightloss." <br>";
+            echo "<input type=\"checkbox\" name=\"weight_loss_".$index."\" checked value=\"".$item_dietsheet->minweightloss."-".$item_dietsheet->maxweightloss."\" /> ".$item_dietsheet->minweightloss."-".$item_dietsheet->maxweightloss." <br>";
             $index++;
         }
         
@@ -36,7 +36,7 @@ class dietselectionForm {
         
         foreach ($input[0] as $item_dietsheet)
         {
-            echo "<input type=\"checkbox\" name=\"kind_diet_".$index."\" checked /> ".$item_dietsheet->type." <br>";
+            echo "<input type=\"checkbox\" name=\"kind_diet_".$index."\" checked value=\"".$item_dietsheet->type."\" /> ".$item_dietsheet->type." <br>";
             $index++;
         }
         
@@ -45,10 +45,10 @@ class dietselectionForm {
         echo "<p>";
         echo "<label for=\"period_of_diet\">Period of diet: </label>";
         
-        echo "<input type=\"radio\" name=\"period_diet\" checked /> 14 days <br>";
-        echo "<input type=\"radio\" name=\"period_diet\" checked /> 21 days <br>";
-        echo "<input type=\"radio\" name=\"period_diet\" checked /> 1 month <br>";
-        echo "<input type=\"radio\" name=\"period_diet\" checked /> 6 months <br>";
+        echo "<input type=\"radio\" name=\"period_diet\" value=\"14\" /> 14 days <br>";
+        echo "<input type=\"radio\" name=\"period_diet\" value=\"21\" /> 21 days <br>";
+        echo "<input type=\"radio\" name=\"period_diet\" value=\"31\" /> 1 month <br>";
+        echo "<input type=\"radio\" name=\"period_diet\" checked value=\"186\" /> 6 months <br>";
         
         echo "</p>";
         
@@ -57,7 +57,7 @@ class dietselectionForm {
         
         foreach ($input[1] as $item_lifestyle)
         {
-            echo "<input type=\"checkbox\" name=\"lifestyle_".$index."\" checked /> ".$item_lifestyle->name." <br>";
+            echo "<input type=\"checkbox\" name=\"lifestyle_".$index."\" checked value=\"".$item_lifestyle->name."\" /> ".$item_lifestyle->name." <br>";
             $index++;
         }
         
@@ -68,7 +68,7 @@ class dietselectionForm {
         
         foreach ($input[2] as $item_recipe)
         {
-            echo "<input type=\"checkbox\" name=\"habit_".$index."\" checked /> ".$item_recipe->name." <br>";
+            echo "<input type=\"checkbox\" name=\"habit_".$index."\" checked value=\"".$item_recipe->name."\" /> ".$item_recipe->name." <br>";
             $index++;
         }
         
@@ -76,7 +76,7 @@ class dietselectionForm {
         
         echo "<br>";
         echo "<div>";
-        echo "<input type=\"submit\" value=\"Next\" style=\"btn btn-primary right\"/>";
+        echo "<input type=\"submit\" value=\"Next\" class=\"btn btn-primary right\"/>";
         echo "</div>";
 
         echo "</form>";
