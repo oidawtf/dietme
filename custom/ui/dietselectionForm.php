@@ -45,10 +45,10 @@ class dietselectionForm {
         echo "<p>";
         echo "<label for=\"period_of_diet\">Period of diet: </label>";
         
-        echo "<input type=\"checkbox\" name=\"period_diet_1\" checked /> 14 days <br>";
-        echo "<input type=\"checkbox\" name=\"period_diet_2\" checked /> 21 days <br>";
-        echo "<input type=\"checkbox\" name=\"period_diet_3\" checked /> 1 month <br>";
-        echo "<input type=\"checkbox\" name=\"period_diet_4\" checked /> 6 months <br>";
+        echo "<input type=\"radio\" name=\"period_diet\" checked /> 14 days <br>";
+        echo "<input type=\"radio\" name=\"period_diet\" checked /> 21 days <br>";
+        echo "<input type=\"radio\" name=\"period_diet\" checked /> 1 month <br>";
+        echo "<input type=\"radio\" name=\"period_diet\" checked /> 6 months <br>";
         
         echo "</p>";
         
@@ -76,7 +76,7 @@ class dietselectionForm {
         
         echo "<br>";
         echo "<div>";
-        echo "<input type=\"submit\" value=\"Next\" />";
+        echo "<input type=\"submit\" value=\"Next\" style=\"btn btn-primary right\"/>";
         echo "</div>";
 
         echo "</form>";
