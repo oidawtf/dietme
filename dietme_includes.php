@@ -12,7 +12,6 @@ include_once 'custom/ui/dietSheetList.php';
 include_once 'custom/ui/dietSheetSimple.php';
 include_once 'custom/ui/dietselectionForm.php';
 include_once 'custom/ui/orderForm.php';
-include_once 'custom/sessionController';
 include_once 'configuration.php';
 
 ?>
