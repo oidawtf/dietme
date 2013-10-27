@@ -173,8 +173,96 @@ class dbService {
         return null;
     }
     
+    private function getWeightLoss() {
+        $result = array('min' => NULL, 'max' => NULL);
+        
+        if ($_POST == NULL)
+            return $result;
+        
+        for ($i = 0, $count = 0; $i <= $_POST['weight_loss_id']; $i++) {
+            $weightloss = $_POST['weight_loss_'.$i];
+            if ($weightloss == NULL)
+                continue;
+
+            $count++;
+            
+            $weight = explode('-', $weightloss);
+            if (count($weight) < 2)
+                continue;
+            
+            $min = $weight[0];
+            $max = $weight[1];
+            
+            if ($result['min'] == NULL || $result['min'] > $min)
+                $result['min'] = $min;
+            if ($result['max'] == NULL || $result['max'] < $max)
+                $result['max'] = $max;
+        }
+        
+        if ($count == $i)
+        $result = array('min' => NULL, 'max' => NULL);
+
+        return $result;
+    }
+    
+    private function getFilter($filter) {
+        $result = array();
+        
+        if ($_POST == NULL)
+            return $result;
+        
+        for ($i = 0; $i <= $_POST[$filter.'_id']; $i++) {
+            $item = $_POST[$filter.'_'.$i];
+            if ($item == NULL)
+                continue;
+            
+            $result[] = $item;
+        }
+        
+        if (count($result) == $i)
+            $result = array();
+        
+        return $result;
+    }
+    
     public function selectDietSheets($search = NULL) {
         $search = $this->format($search);
+
+        $weightloss = $this->getWeightLoss(); 
+        $minweight = $weightloss['min'];
+        $maxweight = $weightloss['max'];
+        $types = $this->getFilter('kind_diet');
+        $lifestyles = $this->getFilter('lifestyle');
+        $habits = $this->getFilter('habit');
+
+        echo "<pre>";
+        var_dump($weightloss);
+        var_dump($types);
+        var_dump($lifestyles);
+        var_dump($habits);
+        echo "</pre>";
+        
+        $this->debug = TRUE;
+        $search = "WHERE 1 = 1";
+        
+        if ($minweight != NULL)
+            $search = $search." AND DS.minweightloss <= '".$minweight."'";
+        if ($maxweight != NULL)
+            $search = $search." AND DS.maxweightloss >= '".$maxweight."'";
+        
+        if ($types != NULL && count($types) > 0) {
+            $search = $search." AND (DS.type = '".$types[0]."'";
+            for ($i = 1; $i < count($types); $i++)
+                $search = $search." OR DS.type = '".$types[$i]."'";
+            $search = $search.")";
+        }
+        
+        if ($lifestyles != NULL && count($lifestyles) > 0) {
+            $search = $search." AND (DS.name_lifestyle == '".$lifestyles[0]."'";
+            for ($i = 1; $i > count($lifestyles); $i++)
+                $search = $search." OR DS.name_lifestyle == '".$lifestyles[$i]."'";
+            $search = $search.")";
+        }
         
         return $this->selectDietSheetsIntern($search);
     }
