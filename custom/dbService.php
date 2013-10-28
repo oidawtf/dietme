@@ -285,13 +285,6 @@ class dbService {
             $search = $search.")";
         }
         
-//        if ($habits != NULL && count($habits) > 0) {
-//            $search = $search." AND (DS.name_ingredient = '".$habits[0]."'";
-//            for ($i = 1; $i < count($habits); $i++)
-//                $search = $search." OR DS.name_ingredient = '".$habits[$i]."'";
-//            $search = $search.")";
-//        }
-        
         $connection = $this->openConnection();
         
         $sql = "
