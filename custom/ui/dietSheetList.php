@@ -17,6 +17,16 @@ class dietSheetList {
         $period = $_POST['period'];
         $i = 0;
         echo "<div class='blog'>";
+        
+        if ($list == NULL || count($list) == 0) {
+            echo "<div class='alert alert-message'><a data-dismiss='alert' class='close'>×</a>";
+            echo    "<h4 class='alert-heading'>No matching dietsheets found</h4>";
+            echo    "<div>";
+            echo        "<p>Change the filtering criteria.</p>";
+            echo    "</div>";
+            echo "</div>";
+        }
+        
         foreach ($list as $dietsheet) {
             echo "<div class='items-row cols-1 row-".$i." row-fluid clearfix'>";
             echo    "<div class='span12'>";

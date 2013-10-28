@@ -156,8 +156,39 @@ class dbService {
         return $result;
     }
     
+    private function selectIngredientsNot($ingredients) {
+        $connection = $this->openConnection();
+        
+        $search = $this->format($search);
+
+        $where = "WHERE 1 = 1";
+        if ($ingredients != NULL && count($ingredients) > 0) {
+            $where = $where." AND (name != '".$ingredients[0]."'";
+            for ($i = 1; $i < count($ingredients); $i++)
+                $where = $where." AND name != '".$ingredients[$i]."'";
+            $where = $where.")";
+        }
+        
+        $sql = "
+            SELECT name FROM ingredients
+            ".$where."
+            ;";
+        
+        $query = mysql_query($sql);
+        
+        $result = array();
+        while ($row = mysql_fetch_assoc($query))
+            $result[] = $row['name'];
+        
+        if ($this->debug)
+            $this->displayResult($connection, $sql, $query, $result);
+        
+        $this->closeConnection($query);
+        
+        return $result;
+    }
+    
     public function selectDietSheet($id) {
-        $id = $this->format($id);
 
         $where = NULL;
         if ($id != NULL)
@@ -226,29 +257,19 @@ class dbService {
     }
     
     public function selectDietSheets($search = NULL) {
-        $search = $this->format($search);
-
+        
         $weightloss = $this->getWeightLoss(); 
         $minweight = $weightloss['min'];
         $maxweight = $weightloss['max'];
         $types = $this->getFilter('kind_diet');
         $lifestyles = $this->getFilter('lifestyle');
         $habits = $this->getFilter('habit');
-
-        echo "<pre>";
-        var_dump($weightloss);
-        var_dump($types);
-        var_dump($lifestyles);
-        var_dump($habits);
-        echo "</pre>";
+        $ingredients = $this->selectIngredientsNot($habits);
         
-        $this->debug = TRUE;
         $search = "WHERE 1 = 1";
         
-        if ($minweight != NULL)
-            $search = $search." AND DS.minweightloss <= '".$minweight."'";
-        if ($maxweight != NULL)
-            $search = $search." AND DS.maxweightloss >= '".$maxweight."'";
+        if ($minweight != NULL && $maxweight != NULL)
+            $search = $search." AND (DS.minweightloss <= '".$minweight."' OR DS.maxweightloss >= '".$maxweight."')";
         
         if ($types != NULL && count($types) > 0) {
             $search = $search." AND (DS.type = '".$types[0]."'";
@@ -258,13 +279,135 @@ class dbService {
         }
         
         if ($lifestyles != NULL && count($lifestyles) > 0) {
-            $search = $search." AND (DS.name_lifestyle == '".$lifestyles[0]."'";
-            for ($i = 1; $i > count($lifestyles); $i++)
-                $search = $search." OR DS.name_lifestyle == '".$lifestyles[$i]."'";
+            $search = $search." AND (LS.name = '".$lifestyles[0]."'";
+            for ($i = 1; $i < count($lifestyles); $i++)
+                $search = $search." OR LS.name = '".$lifestyles[$i]."'";
             $search = $search.")";
         }
         
-        return $this->selectDietSheetsIntern($search);
+        $connection = $this->openConnection();
+        
+        $sql = "
+            SELECT
+                DS.id_dietsheet,
+                DS.name_dietsheet,
+                DS.image_dietsheet,
+                DS.description_dietsheet,
+                DS.minweightloss,
+                DS.maxweightloss,
+                DS.type,
+                DS.name_ingredient,
+                LS.name AS name_lifestyle
+            FROM
+                lifestyles AS LS
+                RIGHT OUTER JOIN (
+                    SELECT
+                        DS.id_dietsheet,
+                        DS.name_dietsheet,
+                        DS.image_dietsheet,
+                        DS.description_dietsheet,
+                        DS.minweightloss,
+                        DS.maxweightloss,
+                        DS.type,
+                        DS.name_ingredient,
+                        DL.f_lifestyles AS id_lifestyle
+                    FROM
+                        _dietsheets_lifestyles AS DL
+                        RIGHT OUTER JOIN (
+                            SELECT
+                                DS.id AS id_dietsheet,
+                                DS.name AS name_dietsheet,
+                                DS.image AS image_dietsheet,
+                                DS.description AS description_dietsheet,
+                                DS.minweightloss,
+                                DS.maxweightloss,
+                                DS.type,
+                                DREI.name_ingredient
+                            FROM
+                                dietsheets AS DS
+                                LEFT OUTER JOIN (
+                                    SELECT
+                                        DR.f_dietsheets,
+                                        REI.name_ingredient
+                                    FROM
+                                        _dietsheets_recipes AS DR
+                                        LEFT OUTER JOIN (
+                                            SELECT
+                                                RE.id AS id_recipe,
+                                                RE.name AS name_recipe,
+                                                RI.id_ingredients,
+                                                RI.name AS name_ingredient
+                                            FROM
+                                                recipes AS RE
+                                                LEFT OUTER JOIN (
+                                                    SELECT
+                                                        RI.f_recipes AS id_recipes,
+                                                        RI.f_ingredients AS id_ingredients,
+                                                        IG.name
+                                                    FROM
+                                                        _recipes_ingredients AS RI,
+                                                        ingredients AS IG
+                                                    WHERE
+                                                        RI.f_ingredients = IG.id
+                                                ) AS RI ON RI.id_recipes = RE.id
+                                        ) AS REI ON REI.id_recipe = DR.f_recipes
+                                ) AS DREI ON DREI.f_dietsheets = DS.id
+                            GROUP BY
+                                DS.id,
+                                DREI.name_ingredient
+                        ) AS DS ON DS.id_dietsheet = DL.f_dietsheets 
+                ) AS DS ON DS.id_lifestyle = LS.id
+            ".$search."
+            GROUP BY
+                DS.id_dietsheet,
+                DS.name_ingredient,
+                LS.name
+            ;";
+        
+        $query = mysql_query($sql);
+        
+        $result = array();
+        $blocked = array();
+        while ($row = mysql_fetch_assoc($query))
+        {
+            $id = $row['id_dietsheet'];
+            
+            if (in_array($row['name_ingredient'], $ingredients)) {
+                if (!in_array($id, $blocked))
+                    $blocked[] = $id;
+                continue;
+            }
+            
+            if (!array_key_exists($id, $result)) {
+                $dietsheet = new dietsheet();
+                $dietsheet->id = $id;
+                $dietsheet->name = $row['name_dietsheet'];
+                $dietsheet->image = $row['image_dietsheet'];
+                $dietsheet->description = $row['description_dietsheet'];
+                $dietsheet->minweightloss = $row['minweightloss'];
+                $dietsheet->maxweightloss = $row['maxweightloss'];
+                $dietsheet->type = $row['type'];
+                $dietsheet->lifestyles = array();
+                $result[$id] = $dietsheet;
+            }
+
+            $lifestyle = new lifestyle();
+            $lifestyle->id = $row['id_lifestyle'];
+            $lifestyle->name = $row['name_lifestyle'];
+            $lifestyle->description = $row['description_lifestyle'];
+            
+            $result[$id]->lifestyles[] = $lifestyle;
+        }
+
+        foreach ($blocked as $id)
+            unset($result[$id]);
+        
+        if ($this->debug)
+            $this->displayResult($connection, $sql, $query, $result);
+        
+        $this->closeConnection($query);
+        
+        return $result;
     }
     
     private function selectDietSheetsIntern($where = NULL) {
@@ -647,7 +790,7 @@ class dbService {
         
         $result_dietsheet = array();
         $result_lifestyle = array();
-        $result_recipe  = array();
+        $result_ingredient  = array();
         
         $sql = "
             SELECT DISTINCT
@@ -693,26 +836,26 @@ class dbService {
         $sql = "
             SELECT
                 name
-            FROM recipes
+            FROM ingredients
             ;";
         
         $query = mysql_query($sql);
         
         while ($row = mysql_fetch_assoc($query))
         {
-            $recipe = new recipe();
-            $recipe->name = $row['name'];
-            $result_recipe[] = $recipe;
+            $ingredient = new ingredient();
+            $ingredient->name = $row['name'];
+            $result_ingredient[] = $ingredient;
         }
         
         if ($this->debug)
-            $this->displayResult($connection, $sql, $query, $result_recipe);
+            $this->displayResult($connection, $sql, $query, $result_ingredient);
 
         $this->closeConnection($query);
         
         $result[0] = $result_dietsheet;
         $result[1] = $result_lifestyle;
-        $result[2] = $result_recipe;
+        $result[2] = $result_ingredient;
         
         return $result;
     }

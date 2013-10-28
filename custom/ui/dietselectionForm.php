@@ -74,10 +74,10 @@ class dietselectionForm {
         echo "<label for=\"eating_habits\">Eating habits: </label>";
         
         $index = -1;
-        foreach ($input[2] as $item_recipe)
+        foreach ($input[2] as $item_ingredient)
         {
             $index++;
-            echo "<input type=\"checkbox\" name=\"habit_".$index."\" checked value=\"".$item_recipe->name."\" /> ".$item_recipe->name." <br>";
+            echo "<input type=\"checkbox\" name=\"habit_".$index."\" checked value=\"".$item_ingredient->name."\" /> ".$item_ingredient->name." <br>";
         }
         echo "<input type='hidden' name='habit_id' value='".$index."' />";
         
