@@ -236,7 +236,7 @@ class dbService {
         return $result;
     }
     
-    private function getFilter($filter) {
+    private function getFilter($filter, $reverse = FALSE) {
         $result = array();
         
         if ($_POST == NULL)
@@ -250,7 +250,7 @@ class dbService {
             $result[] = $item;
         }
         
-        if (count($result) == $i)
+        if (count($result) == $i && !$reverse)
             $result = array();
         
         return $result;
@@ -263,7 +263,7 @@ class dbService {
         $maxweight = $weightloss['max'];
         $types = $this->getFilter('kind_diet');
         $lifestyles = $this->getFilter('lifestyle');
-        $habits = $this->getFilter('habit');
+        $habits = $this->getFilter('habit', TRUE);
         $ingredients = $this->selectIngredientsNot($habits);
         
         $search = "WHERE 1 = 1";
@@ -284,6 +284,13 @@ class dbService {
                 $search = $search." OR LS.name = '".$lifestyles[$i]."'";
             $search = $search.")";
         }
+        
+//        if ($habits != NULL && count($habits) > 0) {
+//            $search = $search." AND (DS.name_ingredient = '".$habits[0]."'";
+//            for ($i = 1; $i < count($habits); $i++)
+//                $search = $search." OR DS.name_ingredient = '".$habits[$i]."'";
+//            $search = $search.")";
+//        }
         
         $connection = $this->openConnection();
         
