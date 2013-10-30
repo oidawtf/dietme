@@ -14,7 +14,7 @@
 class dietSheetList {
     
     public static function show($list) {
-        $period = $_POST['period'];
+        $period = $_POST['period_diet'];
         $i = 0;
         echo "<div class='blog'>";
         

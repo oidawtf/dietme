@@ -14,6 +14,9 @@
 class dietSheetDetails {
     
     public static function show($dietsheet) {
+        if ($dietsheet == NULL)
+            return;
+        
         $days = count($dietsheet->recipes);
         
         if ($_GET['days'] != NULL)

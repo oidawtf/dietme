@@ -13,9 +13,11 @@
 class orderForm {
     
     public static function show($input) {
+        if ($input == NULL)
+            return;
         
         $times = 1;
-        if ($_GET['times'] != NULL)
+        if (isset($_GET['times']))
             $times = $_GET['times'];
         
         echo "<table class='category table table-striped table-bordered table-hover margin0'>";

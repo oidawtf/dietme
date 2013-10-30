@@ -159,8 +159,6 @@ class dbService {
     private function selectIngredientsNot($ingredients) {
         $connection = $this->openConnection();
         
-        $search = $this->format($search);
-
         $where = "WHERE 1 = 1";
         if ($ingredients != NULL && count($ingredients) > 0) {
             $where = $where." AND (name != '".$ingredients[0]."'";
@@ -392,9 +390,7 @@ class dbService {
             }
 
             $lifestyle = new lifestyle();
-            $lifestyle->id = $row['id_lifestyle'];
             $lifestyle->name = $row['name_lifestyle'];
-            $lifestyle->description = $row['description_lifestyle'];
             
             $result[$id]->lifestyles[] = $lifestyle;
         }

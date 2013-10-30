@@ -14,6 +14,9 @@
 class dietSheetSimple {
     
     public static function show($dietsheet, $times = 1, $days = NULL) {
+        if ($dietsheet == NULL)
+            return;
+        
         echo "<div class='page-header'>";
         htmlhelper::image($dietsheet->getImage(), "image-dietsheet");
         echo    "<h2>";
